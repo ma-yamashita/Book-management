@@ -1,13 +1,8 @@
 function doGet() {
-//  return HtmlService.createHtmlOutputFromFile("GAS/list")
-  return HtmlService.createHtmlOutputFromFile("GAS/regist")
+//  return HtmlService.createTemplateFromFile("GAS/list").evaluate();
+  return HtmlService.createTemplateFromFile("GAS/regist").evaluate();
 }
-
+  
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
-}
-
-function test() {
-  var res = include("GAS/css");
-  Logger.log(res); 
 }
