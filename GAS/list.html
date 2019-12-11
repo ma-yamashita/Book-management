@@ -3,8 +3,6 @@
   <head>
     <base target="_top">
     <?!= include('GAS/css'); ?>
-    
-
   </head>
 
   <header>
@@ -21,13 +19,13 @@
     <option value="2">東京</option>
     <option value="3">沖縄</option>
     </select>
-    <input type="button" name="search" value="検索" onclick="onSearchClick()">
+    <input type="button" name="search" value="検索" onclick="makeTable()">
     <input type="button" name="clerr" value="検索条件クリア">
     <input type="button" name="regist" value="新規登録"></p>
     </bhead>
-  
-    <? var data = getData(); ?>
 
+<!--  
+    <? var data = getData(); ?>
     <table border="1">
       <thead>
         <tr bgcolor = "#AFDFE4">
@@ -52,14 +50,61 @@
         </tr><? } ?>
       </tbody>
     </table>
+-->
+    <div id = "dvTable" />
     <script>
-      function onSearchClick() {
-        var paramete1=document.getElementById("bnameid").value;
-        var paramete2=document.getElementById("whereaboutsid").value;
-        console.log(paramete1);
-        console.log(paramete2);
-        data = google.script.run.getData(paramete1,paramete2);
+      function makeTable() {
+        // テキストボックスの入力値を取得する
+        const paramete1 = document.getElementById('bnameid').value;
+        const paramete2 = document.getElementById('whereaboutsid').value;
+
+        // データを取得する
+        google.script.run.withSuccessHandler(function(data) {
+
+          const tableId = "tId";
+          //Table clear
+          if (document.getElementById(tableId)) document.getElementById(tableId).remove();
+
+          //Create a HTML Table element.
+          var table = document.createElement("table");
+          table.id = tableId; //Add TableId
+          table.border = "1";
+  
+          //Get the count of columns.
+          var columnCount = data[0].length;
+  
+          //Add the header row.
+          var row = table.insertRow(-1);
+          for (var i = 0; i < columnCount; i++) {
+              var headerCell = document.createElement("TH");
+              headerCell.class = "header" + (i+1);
+              console.log(headerCell.class);
+              headerCell.innerHTML = data[0][i];
+              row.appendChild(headerCell);
+          }
+  
+          //Add the data rows.
+          for (var i = 1; i < data.length; i++) {
+              row = table.insertRow(-1);
+              for (var j = 0; j < columnCount; j++) {
+                  var cell = row.insertCell(-1);
+                  if (data[i][j] == "") continue;
+                  cell.innerHTML = data[i][j];
+              }
+          }
+  
+          var dvTable = document.getElementById("dvTable");
+          // dvTable.innerHTML = "";
+          dvTable.appendChild(table);
+
+        }).withFailureHandler(function(e) {
+          // データの取得に失敗した場合
+          alert(e);
+        }).getData(paramete1,paramete2);
       }
+      // 初期表示時の処理
+      makeTable();
+
     </script>
   </body>
 </html>
