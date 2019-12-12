@@ -21,36 +21,9 @@
     </select>
     <input type="button" name="search" value="検索" onclick="makeTable()">
     <input type="button" name="clerr" value="検索条件クリア">
-    <input type="button" name="regist" value="新規登録"></p>
+    <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
     </bhead>
 
-<!--  
-    <? var data = getData(); ?>
-    <table border="1">
-      <thead>
-        <tr bgcolor = "#AFDFE4">
-          <th class="header1">書籍名</th>
-          <th class="header2">所在</th>
-          <th class="header3">所有者</th>
-          <th class="header4" colspan="3">貸し出し状況</th>
-          <th class="header7">編集</th>
-          <th class="header8">削除</th>
-        </tr>
-      </thead>
-      <tbody>  
-        <tr><? for (var i = 1; i < data.length; i++) { ?>
-          <td class="data1" width="250"><a href="<?= data[i][6] ?>"><?= data[i][0] ?></a></td>
-          <td class="data2"><?= data[i][1] ?></td>
-          <td class="data3"><?= data[i][2] ?></td>
-          <td class="data4"><? if(data[i][3] == 0){ ?><input type="button" name="lend" value="貸出"><? }else{ ?>貸出中<?} ?></td>
-          <td class="data5"><?= data[i][4] ?></td>
-          <td class="data6"><?= fomatdate(data[i][5]); ?></td>        
-          <td class="data7" width="70"><input type="button" name="edit" value="編集"></td>
-          <td class="data8" width="70"><input type="button" name="delete" value=<? if(data[i][5] == 0){ ?>"削除"<? }else{ ?>"削除" disabled<? } ?>></td>
-        </tr><? } ?>
-      </tbody>
-    </table>
--->
     <div id = "dvTable" />
     <script>
       function makeTable() {
@@ -75,24 +48,72 @@
   
           //Add the header row.
           var row = table.insertRow(-1);
-          for (var i = 0; i < columnCount; i++) {
-              var headerCell = document.createElement("TH");
-              headerCell.class = "header" + (i+1);
-              console.log(headerCell.class);
-              headerCell.innerHTML = data[0][i];
-              row.appendChild(headerCell);
+          for (var i = 0; i < columnCount-4; i++) {
+            var headerCell = document.createElement("TH");
+            headerCell.setAttribute("class","header"+(i+1));
+            headerCell.innerHTML = data[0][i];
+            if(i===3) headerCell.setAttribute("colspan", "3");
+            row.appendChild(headerCell);
           }
+          var headerCell = document.createElement("TH");
+          headerCell.setAttribute("class","header"+(i+1));
+          headerCell.innerHTML = "編集";
+          row.appendChild(headerCell);
+
+          var headerCell = document.createElement("TH");
+          headerCell.setAttribute("class","header"+(i+2));
+          headerCell.innerHTML = "削除";
+          row.appendChild(headerCell);
   
           //Add the data rows.
           for (var i = 1; i < data.length; i++) {
-              row = table.insertRow(-1);
-              for (var j = 0; j < columnCount; j++) {
-                  var cell = row.insertCell(-1);
-                  if (data[i][j] == "") continue;
-                  cell.innerHTML = data[i][j];
+            row = table.insertRow(-1);
+            for (var j = 0; j < columnCount-2; j++) {
+              var cell = row.insertCell(-1);
+              cell.setAttribute("class","data"+(j+1));
+              if(j === 0) {
+                var anchor = document.createElement("a");
+                anchor.href = data[i][6];
+                var str = document.createTextNode(data[i][j]);
+                anchor.appendChild(str);
+                cell.appendChild(anchor);
+                continue;
               }
+              if(j === 3) {
+                if(data[i][j] === 1) {
+                  cell.innerHTML = "貸出中";
+                } else {
+                  var btn = document.createElement("button"); 
+                  btn.type = "button";
+                  // btn.onclick = function(){}
+                  var submit = document.createTextNode("貸出");
+                  btn.appendChild(submit);
+                  cell.appendChild(btn);
+                }
+                continue;
+              }
+              if (data[i][j] === "") continue;
+              cell.innerHTML = data[i][j];
+            }
+            // 編集ボタン
+            var cell = row.insertCell(-1);
+            cell.setAttribute("class","data"+(j+1));
+            var btn = document.createElement("button"); 
+            btn.type = "button";
+            // btn.onclick = function(){}
+            var submit = document.createTextNode("編集");
+            btn.appendChild(submit);
+            cell.appendChild(btn);
+            // 削除ボタン
+            var cell = row.insertCell(-1);
+            cell.setAttribute("class","data"+(j+2));
+            var btn = document.createElement("button"); 
+            btn.type = "button";
+            var submit = document.createTextNode("削除");
+            if(data[i][3] === 1) btn.setAttribute("disabled","disabled");
+            btn.appendChild(submit);
+            cell.appendChild(btn);
           }
-  
           var dvTable = document.getElementById("dvTable");
           // dvTable.innerHTML = "";
           dvTable.appendChild(table);
@@ -100,11 +121,15 @@
         }).withFailureHandler(function(e) {
           // データの取得に失敗した場合
           alert(e);
+
         }).getData(paramete1,paramete2);
       }
       // 初期表示時の処理
       makeTable();
 
+      function onClickRegist() {
+        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=regist";}).getURL();          
+      }
     </script>
   </body>
 </html>
