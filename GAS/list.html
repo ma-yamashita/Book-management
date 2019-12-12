@@ -4,28 +4,26 @@
     <base target="_top">
     <?!= include('GAS/css'); ?>
   </head>
-
   <header>
     <h1>書籍管理</h1>
   </header>
-
   <body>
-    <bhead>
-    <p><label>検索</label><br>
-    <input id="bnameid" class="bname" type="text" name="bookname" size="40" placeholder="書籍名の文字列検索">  
-    <select id="whereaboutsid" name="whereabouts">
-    <option value="0">所在検索</option>
-    <option value="1">福井</option>
-    <option value="2">東京</option>
-    <option value="3">沖縄</option>
-    </select>
-    <input type="button" name="search" value="検索" onclick="makeTable()">
-    <input type="button" name="clerr" value="検索条件クリア">
-    <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
-    </bhead>
+    <form>
+      <p><label>検索</label><br>
+      <input id="bnameid" class="bname" type="text" name="bookname" size="40" placeholder="書籍名の文字列検索">  
+      <select id="whereaboutsid" name="whereabouts">
+      <option value="0">所在検索</option>
+      <option value="1">福井</option>
+      <option value="2">東京</option>
+      <option value="3">沖縄</option>
+      </select>
+      <input type="button" name="search" value="検索" onclick="makeTable()">
+      <input type="button" name="clerr" value="検索条件クリア">
+      <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
+    </form>
 
     <div id = "dvTable" />
-    <script>
+   <script>
       function makeTable() {
         // テキストボックスの入力値を取得する
         const paramete1 = document.getElementById('bnameid').value;
