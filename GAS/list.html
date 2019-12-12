@@ -3,8 +3,6 @@
   <head>
     <base target="_top">
     <?!= include('GAS/css'); ?>
-    
-
   </head>
 
   <header>
@@ -23,7 +21,7 @@
     </select>
     <input type="button" name="search" value="検索">
     <input type="button" name="clerr" value="検索条件クリア">
-    <input type="button" name="regist" value="新規登録"></p>
+    <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
     </bhead>
   
     <? var data = getData(); ?>
@@ -52,8 +50,10 @@
         </tr><? } ?>
       </tbody>
     </table>
+    <script>
+      function onClickRegist() {
+        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=regist";}).getURL();          
+      }
+    </script>
   </body>
 </html>
-
-
-

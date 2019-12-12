@@ -3,32 +3,59 @@
   <head>
     <base target="_top">
     <?!= include('GAS/css'); ?>    
-
   </head>
 
   <header>
     <h1>登録／編集</h1>
   </header>
 
-  <body class="regist-bady">
+  <body class = "regist-bady">
     <p><label>書籍名</label><br>
-    <input type="text" name="name" size="40"></p>  
+    <input type = "text" id="nameid" name="name" size="40"></p>  
     <p><label>所有者</label><br>
-    <input type="text" name="owner" size="40"></p>  
+    <input type = "text" id="ownerid" name="owner" size="40"></p>  
     <p><label>所在</label><br>
-    <input type="text" name="name" size="40"></p>  
+    <input type = "text" id="whereaboutsid" name="whereabouts" size="40"></p>  
     <p><label>URL</label><br>
-    <input type="text" name="name" size="40"></p>  
+    <input type = "text" id="urlid" name="url" size="40"></p>  
     <p><label>コメント</label><br>
-    <input type="text" name="name" size="40"></p>  
-
-    <p><input type="button" name="save" value="保存">
-    <input type="button" name="close" value="閉じる"></p>
-
+    <input type="text" id="commentid" name="comment" size="40"></p>  
+    <p><input type="button" name="save" value="保存" onclick="onClickSave()">
+    <input type="button" name="close" value="閉じる" onclick="onClickClose()"></p>
+  
+    <script>
+        function onClickSave() {
+          var name = document.getElementById("nameid").value;
+          var owner = document.getElementById("ownerid").value;
+          var whereabouts = document.getElementById("whereaboutsid").value;
+          var url = document.getElementById("urlid").value;
+          var comment = document.getElementById("commentid").value;
+          if (name == null || name == "") {
+            alert('書籍名は必須入力です');
+            exit;
+          }
+          if (owner == null || owner == "") {
+            alert('所有者は必須入力です');
+            exit;
+          }
+          if (whereabouts == null || whereabouts == "") {
+            alert('所在は必須入力です');
+            exit;
+          }
+          if (url == null || url == "") {
+            alert('URLは必須入力です');
+            exit;
+          }
+          google.script.run.saveData(name, owner, whereabouts, url, comment);
+          google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+        }
+        function onClickClose() {
+          google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+        }
+      </script>  
   </body>
-
-
 </html>
+
 
 
 
