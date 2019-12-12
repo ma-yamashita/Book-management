@@ -45,5 +45,10 @@
         </tr><? } ?>
       </tbody>
     </table>
+    <script>
+      function onClickRegist() {
+        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=regist";}).getURL();          
+      }
+    </script>
   </body>
 </html>
