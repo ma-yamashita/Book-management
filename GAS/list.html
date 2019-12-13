@@ -4,14 +4,12 @@
     <base target="_top">
     <?!= include('GAS/css'); ?>
   </head>
-
   <header>
     <h1>書籍管理</h1>
   </header>
-
   <body>
     <form>
-    <p><label>検索</label><br>
+      <p><label>検索</label><br>
       <input id="bnameid" class="bname" type="text" name="bookname" size="40" placeholder="書籍名の文字列検索">  
       <select id="whereaboutsid" name="whereabouts">
       <option value="0">所在検索</option>
@@ -25,7 +23,7 @@
     </form>
 
     <div id = "dvTable" />
-    <script>
+   <script>
       function makeTable() {
         // テキストボックスの入力値を取得する
         const paramete1 = document.getElementById('bnameid').value;
