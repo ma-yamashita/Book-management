@@ -10,19 +10,19 @@
   </header>
 
   <body>
-    <bhead>
+    <form>
     <p><label>検索</label><br>
-    <input id="bnameid" class="bname" type="text" name="bookname" size="40" placeholder="書籍名の文字列検索">  
-    <select id="whereaboutsid" name="whereabouts">
-    <option value="0">所在検索</option>
-    <option value="1">福井</option>
-    <option value="2">東京</option>
-    <option value="3">沖縄</option>
-    </select>
-    <input type="button" name="search" value="検索" onclick="makeTable()">
-    <input type="button" name="clerr" value="検索条件クリア">
-    <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
-    </bhead>
+      <input id="bnameid" class="bname" type="text" name="bookname" size="40" placeholder="書籍名の文字列検索">  
+      <select id="whereaboutsid" name="whereabouts">
+      <option value="0">所在検索</option>
+      <option value="1">福井</option>
+      <option value="2">東京</option>
+      <option value="3">沖縄</option>
+      </select>
+      <input type="button" name="search" value="検索" onclick="makeTable()">
+      <input type="reset" name="clerr" value="検索条件クリア">
+      <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
+    </form>
 
     <div id = "dvTable" />
     <script>
@@ -77,6 +77,23 @@
                 var str = document.createTextNode(data[i][j]);
                 anchor.appendChild(str);
                 cell.appendChild(anchor);
+                continue;
+              }
+              if(j === 1) {
+                switch(data[i][j]) {
+                  case 1:
+                    cell.innerHTML = "福井"
+                    break;
+                  case 2:
+                    cell.innerHTML = "東京"
+                    break;
+                  case 3:
+                    cell.innerHTML = "沖縄"
+                    break;
+                  default:
+                    cell.innerHTML = ""
+                    break;
+                }
                 continue;
               }
               if(j === 3) {
