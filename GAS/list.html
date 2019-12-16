@@ -18,7 +18,7 @@
       <option value="3">沖縄</option>
       </select>
       <input type="button" name="search" value="検索" onclick="makeTable()">
-      <input type="button" name="clerr" value="検索条件クリア">
+      <input type="reset" name="clerr" value="検索条件クリア">
       <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
     </form>
 
@@ -46,30 +46,30 @@
   
           //Add the header row.
           var row = table.insertRow(-1);
-          for (var i = 0; i < columnCount-4; i++) {
+          for (var i = 1; i < columnCount-4; i++) {
             var headerCell = document.createElement("TH");
-            headerCell.setAttribute("class","header"+(i+1));
+            headerCell.setAttribute("class","header"+(i));
             headerCell.innerHTML = data[0][i];
-            if(i===3) headerCell.setAttribute("colspan", "3");
+            if(i===4) headerCell.setAttribute("colspan", "3");
             row.appendChild(headerCell);
           }
           var headerCell = document.createElement("TH");
-          headerCell.setAttribute("class","header"+(i+1));
+          headerCell.setAttribute("class","header"+(i));
           headerCell.innerHTML = "編集";
           row.appendChild(headerCell);
 
           var headerCell = document.createElement("TH");
-          headerCell.setAttribute("class","header"+(i+2));
+          headerCell.setAttribute("class","header"+(i+1));
           headerCell.innerHTML = "削除";
           row.appendChild(headerCell);
   
           //Add the data rows.
           for (var i = 1; i < data.length; i++) {
             row = table.insertRow(-1);
-            for (var j = 0; j < columnCount-2; j++) {
+            for (var j = 1; j < columnCount-2; j++) {
               var cell = row.insertCell(-1);
-              cell.setAttribute("class","data"+(j+1));
-              if(j === 0) {
+              cell.setAttribute("class","data"+(j));
+              if(j === 1) {
                 var anchor = document.createElement("a");
                 anchor.href = data[i][6];
                 var str = document.createTextNode(data[i][j]);
@@ -77,15 +77,30 @@
                 cell.appendChild(anchor);
                 continue;
               }
-              if(j === 3) {
+              if(j === 2) {
+                switch(data[i][j]) {
+                  case 1:
+                    cell.innerHTML = "福井"
+                    break;
+                  case 2:
+                    cell.innerHTML = "東京"
+                    break;
+                  case 3:
+                    cell.innerHTML = "沖縄"
+                    break;
+                  default:
+                    cell.innerHTML = ""
+                    break;
+                }
+                continue;
+              }
+              if(j === 4) {
                 if(data[i][j] === 1) {
                   cell.innerHTML = "貸出中";
                 } else {
                   var btn = document.createElement("button"); 
                   btn.type = "button";
-                  // btn.onclick = function() {alert('OnClick')};
-                  btn.onclick = function() {onClickLend(1,google.script.run.getUser(),"")};
-                  // btn.onclick = function() {google.script.run.statUpdate(1,google.script.run.getUser(),"")};
+                  // btn.onclick = function(){}
                   var submit = document.createTextNode("貸出");
                   btn.appendChild(submit);
                   cell.appendChild(btn);
@@ -97,19 +112,20 @@
             }
             // 編集ボタン
             var cell = row.insertCell(-1);
-            cell.setAttribute("class","data"+(j+1));
+            cell.setAttribute("class","data"+(j));
             var btn = document.createElement("button"); 
             btn.type = "button";
+            // btn.onclick = function(){}
             var submit = document.createTextNode("編集");
             btn.appendChild(submit);
             cell.appendChild(btn);
             // 削除ボタン
             var cell = row.insertCell(-1);
-            cell.setAttribute("class","data"+(j+2));
+            cell.setAttribute("class","data"+(j+1));
             var btn = document.createElement("button"); 
             btn.type = "button";
             var submit = document.createTextNode("削除");
-            if(data[i][3] === 1) btn.setAttribute("disabled","disabled");
+            if(data[i][4] === 1) btn.setAttribute("disabled","disabled");
             btn.appendChild(submit);
             cell.appendChild(btn);
           }
@@ -128,12 +144,6 @@
 
       function onClickRegist() {
         google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=regist";}).getURL();          
-      }
-
-      function onClickLend(stat, user, row) {
-        console.log("oooo");
-        google.script.run.getUser();          
-        google.script.run.statUpdate(stat, user, row);
       }
 
     </script>

@@ -22,34 +22,38 @@
     <input type="button" name="close" value="閉じる" onclick="onClickClose()"></p>
   
     <script>
-        function onClickSave() {
-          var name = document.getElementById("nameid").value;
-          var owner = document.getElementById("ownerid").value;
-          var whereabouts = document.getElementById("whereaboutsid").value;
-          var url = document.getElementById("urlid").value;
-          var comment = document.getElementById("commentid").value;
-          if (name == null || name == "") {
-            alert('書籍名は必須入力です');
-            exit;
-          }
-          if (owner == null || owner == "") {
-            alert('所有者は必須入力です');
-            exit;
-          }
-          if (whereabouts == null || whereabouts == "") {
-            alert('所在は必須入力です');
-            exit;
-          }
-          if (url == null || url == "") {
-            alert('URLは必須入力です');
-            exit;
-          }
-          google.script.run.saveData(name, owner, whereabouts, url, comment);
-          google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+      function onClickSave() {
+        var name = document.getElementById("nameid").value;
+        var owner = document.getElementById("ownerid").value;
+        var whereabouts = document.getElementById("whereaboutsid").value;
+        var url = document.getElementById("urlid").value;
+        var comment = document.getElementById("commentid").value;
+        if (name == null || name == "") {
+          alert('書籍名は必須入力です');
+          exit;
         }
-        function onClickClose() {
-          google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+        if (owner == null || owner == "") {
+          alert('所有者は必須入力です');
+          exit;
         }
-      </script>  
+        if (whereabouts == null || whereabouts == "") {
+          alert('所在は必須入力です');
+          exit;
+        }
+        if (url == null || url == "") {
+          alert('URLは必須入力です');
+          exit;
+        }
+        google.script.run.saveData(name, owner, whereabouts, url, comment);
+        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+      }
+      function onClickClose() {
+        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+      }
+      function compareFunc(a, b) {
+      return a - b;
+      }
+
+    </script>  
   </body>
 </html>
