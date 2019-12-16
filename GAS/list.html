@@ -18,7 +18,7 @@
       <option value="3">沖縄</option>
       </select>
       <input type="button" name="search" value="検索" onclick="makeTable()">
-      <input type="button" name="clerr" value="検索条件クリア">
+      <input type="reset" name="clerr" value="検索条件クリア">
       <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
     </form>
 
@@ -75,6 +75,23 @@
                 var str = document.createTextNode(data[i][j]);
                 anchor.appendChild(str);
                 cell.appendChild(anchor);
+                continue;
+              }
+              if(j === 1) {
+                switch(data[i][j]) {
+                  case 1:
+                    cell.innerHTML = "福井"
+                    break;
+                  case 2:
+                    cell.innerHTML = "東京"
+                    break;
+                  case 3:
+                    cell.innerHTML = "沖縄"
+                    break;
+                  default:
+                    cell.innerHTML = ""
+                    break;
+                }
                 continue;
               }
               if(j === 3) {

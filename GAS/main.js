@@ -1,6 +1,5 @@
 function doGet(e) {
   var page = e.parameter["p"];
-  Logger.log(page);
   if(page == "list" || page == null) {
     return HtmlService.createTemplateFromFile("GAS/list").evaluate();
   }else if(page == "regist") {
@@ -39,20 +38,17 @@ function getData(p1, p2) {
   var sheet = ss.getSheetByName('books');
   var values = sheet.getDataRange().getValues();
   // テキストボックスの値が未入力であった場合
-  Logger.log("p1:" + p1);
-  Logger.log("p2:" + p2);
-  if (!p1) return values;
+  if (!p1 && p2 < 1) return values;
 
   var result = [];
   var re = new RegExp('\.*' + p1 + '\.*');
   var head = values.shift();
   result.push(head);
 
-  Logger.log(re);
-  Logger.log(re.test(values[0]));
-
   values.forEach(function(value) {
-    if (re.test(value[0])) result.push(value);
+    if(p1 && p2 >= 1) {if (re.test(value[0]) && value[1] == p2) result.push(value)};    
+    if(!p1 && p2 >= 1) {if (value[1] == p2) result.push(value)};
+    if(p1 && p2 < 1) {if (re.test(value[0])) result.push(value)};
   });
   return result;
 }
