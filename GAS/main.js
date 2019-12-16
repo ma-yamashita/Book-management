@@ -65,7 +65,7 @@ function getData(p1, p2) {
   var sheet = ss.getSheetByName('books');
   var values = sheet.getDataRange().getValues();
   // テキストボックスの値が未入力であった場合
-  if (!p1) return values;
+  if (!p1 && p2 < 1) return values;
 
   var result = [];
   var re = new RegExp('\.*' + p1 + '\.*');
@@ -73,7 +73,9 @@ function getData(p1, p2) {
   result.push(head);
 
   values.forEach(function(value) {
-    if (re.test(value[1])) result.push(value);
+    if(p1 && p2 >= 1) {if (re.test(value[1]) && value[2] == p2) result.push(value)};    
+    if(!p1 && p2 >= 1) {if (value[2] == p2) result.push(value)};
+    if(p1 && p2 < 1) {if (re.test(value[1])) result.push(value)};
   });
   return result;
 }
