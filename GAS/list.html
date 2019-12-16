@@ -83,7 +83,9 @@
                 } else {
                   var btn = document.createElement("button"); 
                   btn.type = "button";
-                  // btn.onclick = function(){}
+                  // btn.onclick = function() {alert('OnClick')};
+                  btn.onclick = function() {onClickLend(1,google.script.run.getUser(),"")};
+                  // btn.onclick = function() {google.script.run.statUpdate(1,google.script.run.getUser(),"")};
                   var submit = document.createTextNode("貸出");
                   btn.appendChild(submit);
                   cell.appendChild(btn);
@@ -98,7 +100,6 @@
             cell.setAttribute("class","data"+(j+1));
             var btn = document.createElement("button"); 
             btn.type = "button";
-            // btn.onclick = function(){}
             var submit = document.createTextNode("編集");
             btn.appendChild(submit);
             cell.appendChild(btn);
@@ -128,6 +129,13 @@
       function onClickRegist() {
         google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=regist";}).getURL();          
       }
+
+      function onClickLend(stat, user, row) {
+        console.log("oooo");
+        google.script.run.getUser();          
+        google.script.run.statUpdate(stat, user, row);
+      }
+
     </script>
   </body>
 </html>

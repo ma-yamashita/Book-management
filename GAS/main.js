@@ -29,8 +29,25 @@ function saveData(name, owner, whereabouts, url, comment) {
   sheet.getRange(newRow, 8).setValue(comment);
 }
 
+function statUpdate(stat, user, row) {  
+  var sheet = SpreadsheetApp.openById('1JeDvyRevWXoVMOora4br1EvkwhE8hhp10-OkBxUdI1o').getSheetByName('books');
+  const master = sheet.getDataRange().getValues();
+  Logger.log("stat : " + stat);
+  Logger.log("user : " + user);
+  Logger.log("row : " + row);
+  sheet.getRange(row, 3).setValue(stat);
+  sheet.getRange(row, 4).setValue(user);
+  sheet.getRange(row, 5).setValue(formatdate(Date.now()));//本日日付
+}
+
 function getURL() {
   return PropertiesService.getScriptProperties().getProperty("MY_URL");
+}
+
+function getUser() {
+  var objUser = Session.getActiveUser();
+  var strUser = objUser.toString();
+  var userName = strUser.split('@')[0];
 }
 
 function getData(p1, p2) {
@@ -39,17 +56,12 @@ function getData(p1, p2) {
   var sheet = ss.getSheetByName('books');
   var values = sheet.getDataRange().getValues();
   // テキストボックスの値が未入力であった場合
-  Logger.log("p1:" + p1);
-  Logger.log("p2:" + p2);
   if (!p1) return values;
 
   var result = [];
   var re = new RegExp('\.*' + p1 + '\.*');
   var head = values.shift();
   result.push(head);
-
-  Logger.log(re);
-  Logger.log(re.test(values[0]));
 
   values.forEach(function(value) {
     if (re.test(value[0])) result.push(value);
