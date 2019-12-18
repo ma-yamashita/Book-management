@@ -1,30 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base target="_top">
-    <?!= include('GAS/css'); ?>    
+    <base target = "_top">
+    <?!= include("GAS/css"); ?>    
   </head>
   <header>
     <h1>登録／編集</h1>
   </header>
   <body class = "regist-bady">
     <p><label>書籍名</label><br>
-    <input type = "text" id="nameid" name="name" size="40"></p>  
+    <input type = "text" id = "nameid" name = "name" size = "40"></p>  
     <p><label>所有者</label><br>
-    <input type = "text" id="ownerid" name="owner" size="40"></p>  
+    <input type = "text" id = "ownerid" name = "owner" size = "40"></p>  
     <p><label>所在</label><br>
-    <select id="whereaboutsid" name="whereabouts">
-      <option value="0">所在検索</option>
-      <option value="1">福井</option>
-      <option value="2">東京</option>
-      <option value="3">沖縄</option>
+    <select id = "whereaboutsid" name = "whereabouts">
+      <option value = "0">所在検索</option>
+      <option value = "1">福井</option>
+      <option value = "2">東京</option>
+      <option value = "3">沖縄</option>
     </select></p>
     <p><label>URL</label><br>
-    <input type = "text" id="urlid" name="url" size="40"></p>  
+    <input type = "text" id = "urlid" name = "url" size = "40"></p>  
     <p><label>コメント</label><br>
-    <input type="text" id="commentid" name="comment" size="40"></p>  
-    <p><input type="button" name="save" value="保存" onclick="onClickSave()">
-    <input type="button" name="close" value="閉じる" onclick="onClickClose()"></p>
+    <input type = "text" id = "commentid" name = "comment" size = "40"></p>  
+    <p><input type = "button" name = "save" value = "保存" onclick = "onClickSave()">
+    <input type = "button" name = "close" value = "閉じる" onclick = "onClickClose()"></p>
   
     <script>
       function onClickSave() {
@@ -34,19 +34,19 @@
         var url = document.getElementById("urlid").value;
         var comment = document.getElementById("commentid").value;
         if (name == null || name == "") {
-          alert('書籍名は必須入力です');
+          alert("書籍名は必須入力です");
           exit;
         }
         if (owner == null || owner == "") {
-          alert('所有者は必須入力です');
+          alert("所有者は必須入力です");
           exit;
         }
         if (whereabouts == null || whereabouts == "") {
-          alert('所在は必須入力です');
+          alert("所在は必須入力です");
           exit;
         }
         if (url == null || url == "") {
-          alert('URLは必須入力です');
+          alert("URLは必須入力です");
           exit;
         }
         google.script.run.saveData(name, owner, whereabouts, url, comment);
