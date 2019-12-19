@@ -17,8 +17,9 @@ function include(filename) {
 
 function saveData(name, owner, whereabouts, url, comment) {  
   var ssId = getSSID();
+  var sheetName = getSheetName();
   var ss = SpreadsheetApp.openById(ssId);
-  var sheet = ss.getSheetByName("books");
+  var sheet = ss.getSheetByName(sheetName);
   var values = sheet.getDataRange().getValues();
   var cntRow = sheet.getLastRow()
   var newRow = cntRow + 1;
@@ -46,6 +47,10 @@ function getSSID() {
   return PropertiesService.getScriptProperties().getProperty("MY_SSID");
 }
 
+function getSheetName() {
+  return PropertiesService.getScriptProperties().getProperty("MY_SheetName");
+}
+
 function getUser() {
   var objUser = Session.getActiveUser();
   var strUser = objUser.toString();
@@ -55,10 +60,11 @@ function getUser() {
 
 function updateItem(bookId, lendReturn) {
   var ssId = getSSID();
+  var sheetName = getSheetName();
   var ss = SpreadsheetApp.openById(ssId);
-  var sheet = ss.getSheetByName("books");
+  var sheet = ss.getSheetByName(sheetName);
   var values = sheet.getDataRange().getValues();
-  var cntRow = sheet.getLastRow()
+  var cntRow = sheet.getLastRow();
   for (var i = 0; i < cntRow; ++i) {
     var row = values[i]
     if(row[0] == bookId) {
@@ -85,8 +91,9 @@ function updateItem(bookId, lendReturn) {
  */
 function getData(p1, p2) {
   var ssId = getSSID();
+  var sheetName = getSheetName();
   var ss = SpreadsheetApp.openById(ssId);
-  var sheet = ss.getSheetByName("books");
+  var sheet = ss.getSheetByName(sheetName);
   var values = sheet.getDataRange().getValues();
   // 検索条件がないとき、全件データ取得する
   if (!p1 && p2 < 1) return values;

@@ -71,7 +71,8 @@
               cell.setAttribute("class", "data" + (j));
               if(j === 1) {// 書籍名
                 var anchor = document.createElement("a");
-                anchor.href = data[i][6];
+                anchor.href = data[i][7];
+                anchor.target = "_blank";
                 var str = document.createTextNode(data[i][j]);
                 anchor.appendChild(str);
                 cell.appendChild(anchor);
@@ -101,8 +102,7 @@
                     btn.type = "button";
                     btn.id = data[i][0];
                     btn.onclick = function(){onClickReturn(this.id)};
-                    var submit = document.createTextNode("返却");
-                    btn.appendChild(submit);
+                    btn.appendChild(document.createTextNode("返却"));
                     cell.appendChild(btn);
                   } else {// 貸出者が呼び出し元アカウントと同じでないとき「貸出中」表示
                     cell.innerHTML = "貸出中";
@@ -112,8 +112,7 @@
                   btn.type = "button";
                   btn.id = data[i][0];
                   btn.onclick = function(){onClickLend(this.id)};
-                  var submit = document.createTextNode("貸出");
-                  btn.appendChild(submit);
+                  btn.appendChild(document.createTextNode("貸出"));
                   cell.appendChild(btn);
                 }
                 continue;
@@ -128,8 +127,7 @@
             btn.type = "button";
             // btn.id = data[i][0];
             // btn.onclick = function(){};
-            var submit = document.createTextNode("編集");
-            btn.appendChild(submit);
+            btn.appendChild(document.createTextNode("編集"));
             cell.appendChild(btn);
             // 削除ボタン
             var cell = row.insertCell(-1);
@@ -138,9 +136,8 @@
             btn.type = "button";
             // btn.id = data[i][0];
             // btn.onclick = function(){};
-            var submit = document.createTextNode("削除");
             if(data[i][4] === 1) btn.setAttribute("disabled", "disabled");
-            btn.appendChild(submit);
+            btn.appendChild(document.createTextNode("削除"));
             cell.appendChild(btn);
           }
           var dvTable = document.getElementById("dvTable");

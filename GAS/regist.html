@@ -33,24 +33,44 @@
         var whereabouts = document.getElementById("whereaboutsid").value;
         var url = document.getElementById("urlid").value;
         var comment = document.getElementById("commentid").value;
+        var strAlert = "";
+        var comma = "、";
         if (name == null || name == "") {
-          alert("書籍名は必須入力です");
-          exit;
+          if (strAlert.length > 0) {
+            strAlert = strAlert + comma + "書籍名"
+          } else {
+            strAlert = "書籍名" 
+          }
         }
         if (owner == null || owner == "") {
-          alert("所有者は必須入力です");
-          exit;
+          if (strAlert.length > 0) {
+            strAlert = strAlert + comma + "所有者"
+          } else {
+            strAlert = "所有者" 
+          }
         }
-        if (whereabouts == null || whereabouts == "") {
-          alert("所在は必須入力です");
-          exit;
+        if (whereabouts == 0) {
+          if (strAlert.length > 0) {
+            strAlert = strAlert + comma + "所在"
+          } else {
+            strAlert = "所在" 
+          }
         }
         if (url == null || url == "") {
-          alert("URLは必須入力です");
-          exit;
+          if (strAlert.length > 0) {
+            strAlert = strAlert + comma + "URL"
+          } else {
+            strAlert = "URL" 
+          }
         }
+
+        if (strAlert.length > 0) {
+          alert(strAlert + " は必須入力です。入力してください。");
+          return;
+        }
+
         google.script.run.saveData(name, owner, whereabouts, url, comment);
-        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+        onClickClose();
       }
       function onClickClose() {
         google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
