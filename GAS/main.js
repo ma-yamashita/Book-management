@@ -10,7 +10,12 @@ function doGet(e) {
     return ContentService.createTextOutput("ERROR：");
   }
 }
-  
+
+function getPara(e) {
+  var target = e.parameter["t"];
+  return target;
+}
+
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }

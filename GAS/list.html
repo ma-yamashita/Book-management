@@ -125,8 +125,8 @@
             cell.setAttribute("class","data" + (j));
             var btn = document.createElement("button"); 
             btn.type = "button";
-            // btn.id = data[i][0];
-            // btn.onclick = function(){};
+            btn.id = data[i][0];
+            btn.onclick = function(){onClickEdit(this.id)};
             btn.appendChild(document.createTextNode("編集"));
             cell.appendChild(btn);
             // 削除ボタン
@@ -154,6 +154,10 @@
 
       function onClickRegist() {
         google.script.run.withSuccessHandler(function(myUrl){window.top.location.href = myUrl + "?p=regist";}).getURL();          
+      }
+
+      function onClickEdit(editId) {
+        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href = myUrl + "?p=regist&t=" + editId;}).getURL();          
       }
 
       function onClickLend(lendId) {

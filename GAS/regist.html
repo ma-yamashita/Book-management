@@ -63,12 +63,10 @@
             strAlert = "URL" 
           }
         }
-
         if (strAlert.length > 0) {
           alert(strAlert + " は必須入力です。入力してください。");
           return;
         }
-
         google.script.run.saveData(name, owner, whereabouts, url, comment);
         onClickClose();
       }
@@ -78,6 +76,28 @@
       function compareFunc(a, b) {
       return a - b;
       }
+      function initBody() {
+        document.getElementById("nameid").value = "";
+        document.getElementById("ownerid").value = "";
+        document.getElementById("whereaboutsid").value = "0";
+        document.getElementById("urlid").value = "";
+        document.getElementById("commentid").value = "";
+        google.script.run.withSuccessHandler(function(myTarget){makeBody(myTarget)}).getPara();  
+      }
+      function makeBody(target){
+        if(target) {
+          console.log(target);
+          document.getElementById("nameid").value = "test1";
+          document.getElementById("ownerid").value = "test2";
+          document.getElementById("whereaboutsid").value = "0";
+          document.getElementById("urlid").value = "test4";
+          document.getElementById("commentid").value = "test5";
+        }
+      }
+
+      // 初期表示時の処理
+      initBody();
+      
 
     </script>  
   </body>
