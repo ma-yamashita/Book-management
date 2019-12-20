@@ -48,9 +48,7 @@ function getSheetName() {
 }
 
 function getUser() {
-  var objUser = Session.getActiveUser();
-  var strUser = objUser.toString();
-  var userName = strUser.split("@")[0];
+  var userName = Session.getActiveUser().toString().split("@")[0];
   return userName;
 }
 
