@@ -1,60 +1,84 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base target="_top">
-    <?!= include('GAS/css'); ?>    
+    <base target = "_top">
+    <?!= include("GAS/css"); ?>    
   </head>
   <header>
     <h1>登録／編集</h1>
   </header>
   <body class = "regist-bady">
     <p><label>書籍名</label><br>
-    <input type = "text" id="nameid" name="name" size="40"></p>  
+    <input type = "text" id = "nameid" name = "name" size = "40"></p>  
     <p><label>所有者</label><br>
-    <input type = "text" id="ownerid" name="owner" size="40"></p>  
+    <input type = "text" id = "ownerid" name = "owner" size = "40"></p>  
     <p><label>所在</label><br>
-    <select id="whereaboutsid" name="whereabouts">
-      <option value="0">所在検索</option>
-      <option value="1">福井</option>
-      <option value="2">東京</option>
-      <option value="3">沖縄</option>
+    <select id = "whereaboutsid" name = "whereabouts">
+      <option value = "0">所在検索</option>
+      <option value = "1">福井</option>
+      <option value = "2">東京</option>
+      <option value = "3">沖縄</option>
     </select></p>
     <p><label>URL</label><br>
-    <input type = "text" id="urlid" name="url" size="40"></p>  
+    <input type = "text" id = "urlid" name = "url" size = "40"></p>  
     <p><label>コメント</label><br>
-    <input type="text" id="commentid" name="comment" size="40"></p>  
-    <p><input type="button" name="save" value="保存" onclick="onClickSave()">
-    <input type="button" name="close" value="閉じる" onclick="onClickClose()"></p>
+    <input type = "text" id = "commentid" name = "comment" size = "40"></p>  
+    <p><input type = "button" name = "save" value = "保存" onclick = "onClickSave()">
+    <input type = "button" name = "close" value = "閉じる" onclick = "onClickClose()"></p>
   
     <script>
-        function onClickSave() {
-          var name = document.getElementById("nameid").value;
-          var owner = document.getElementById("ownerid").value;
-          var whereabouts = document.getElementById("whereaboutsid").value;
-          var url = document.getElementById("urlid").value;
-          var comment = document.getElementById("commentid").value;
-          if (name == null || name == "") {
-            alert('書籍名は必須入力です');
-            exit;
+      function onClickSave() {
+        var name = document.getElementById("nameid").value;
+        var owner = document.getElementById("ownerid").value;
+        var whereabouts = document.getElementById("whereaboutsid").value;
+        var url = document.getElementById("urlid").value;
+        var comment = document.getElementById("commentid").value;
+        var strAlert = "";
+        var comma = "、";
+        if (name == null || name == "") {
+          if (strAlert.length > 0) {
+            strAlert = strAlert + comma + "書籍名";
+          } else {
+            strAlert = "書籍名";
           }
-          if (owner == null || owner == "") {
-            alert('所有者は必須入力です');
-            exit;
-          }
-          if (whereabouts == null || whereabouts == "") {
-            alert('所在は必須入力です');
-            exit;
-          }
-          if (url == null || url == "") {
-            alert('URLは必須入力です');
-            exit;
-          }
-          google.script.run.saveData(name, owner, whereabouts, url, comment);
-          google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
         }
-        function onClickClose() {
-          google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+        if (owner == null || owner == "") {
+          if (strAlert.length > 0) {
+            strAlert = strAlert + comma + "所有者";
+          } else {
+            strAlert = "所有者";
+          }
         }
-      </script>  
+        if (whereabouts == 0) {
+          if (strAlert.length > 0) {
+            strAlert = strAlert + comma + "所在";
+          } else {
+            strAlert = "所在";
+          }
+        }
+        if (url == null || url == "") {
+          if (strAlert.length > 0) {
+            strAlert = strAlert + comma + "URL";
+          } else {
+            strAlert = "URL";
+          }
+        }
+
+        if (strAlert.length > 0) {
+          alert(strAlert + " は必須入力です。入力してください。");
+          return;
+        }
+
+        google.script.run.saveData(name, owner, whereabouts, url, comment);
+        onClickClose();
+      }
+      function onClickClose() {
+        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=list";}).getURL();
+      }
+      function compareFunc(a, b) {
+      return a - b;
+      }
+
+    </script>  
   </body>
 </html>

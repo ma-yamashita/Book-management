@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <base target="_top">
-    <?!= include('GAS/css'); ?>
+    <base target = "_top">
+    <?!= include("GAS/css"); ?>
   </head>
   <header>
     <h1>書籍管理</h1>
@@ -10,24 +10,24 @@
   <body>
     <form>
       <p><label>検索</label><br>
-      <input id="bnameid" class="bname" type="text" name="bookname" size="40" placeholder="書籍名の文字列検索">  
-      <select id="whereaboutsid" name="whereabouts">
-      <option value="0">所在検索</option>
-      <option value="1">福井</option>
-      <option value="2">東京</option>
-      <option value="3">沖縄</option>
+      <input id = "bnameid" class = "bname" type = "text" name = "bookname" size = "40" placeholder = "書籍名の文字列検索">  
+      <select id = "whereaboutsid" name = "whereabouts">
+      <option value = "0">所在検索</option>
+      <option value = "1">福井</option>
+      <option value = "2">東京</option>
+      <option value = "3">沖縄</option>
       </select>
-      <input type="button" name="search" value="検索" onclick="makeTable()">
-      <input type="reset" name="clerr" value="検索条件クリア">
-      <input type="button" name="regist" value="新規登録" onclick="onClickRegist()"></p>
+      <input type = "button" name = "search" value = "検索" onclick = "makeTable()">
+      <input type = "reset" name = "clerr" value = "検索条件クリア">
+      <input type = "button" name = "regist" value = "新規登録" onclick = "onClickRegist()"></p>
     </form>
 
     <div id = "dvTable" />
    <script>
       function makeTable() {
         // テキストボックスの入力値を取得する
-        const paramete1 = document.getElementById('bnameid').value;
-        const paramete2 = document.getElementById('whereaboutsid').value;
+        const paramete1 = document.getElementById("bnameid").value;
+        const paramete2 = document.getElementById("whereaboutsid").value;
 
         // データを取得する
         google.script.run.withSuccessHandler(function(data) {
@@ -46,38 +46,39 @@
   
           //Add the header row.
           var row = table.insertRow(-1);
-          for (var i = 0; i < columnCount-4; i++) {
+          for (var i = 1; i < columnCount-4; i++) {
             var headerCell = document.createElement("TH");
-            headerCell.setAttribute("class","header"+(i+1));
+            headerCell.setAttribute("class", "header" + (i));
             headerCell.innerHTML = data[0][i];
-            if(i===3) headerCell.setAttribute("colspan", "3");
+            if(i === 4) headerCell.setAttribute("colspan", "3");
             row.appendChild(headerCell);
           }
           var headerCell = document.createElement("TH");
-          headerCell.setAttribute("class","header"+(i+1));
+          headerCell.setAttribute("class", "header" + (i));
           headerCell.innerHTML = "編集";
           row.appendChild(headerCell);
 
           var headerCell = document.createElement("TH");
-          headerCell.setAttribute("class","header"+(i+2));
+          headerCell.setAttribute("class", "header" + (i + 1));
           headerCell.innerHTML = "削除";
           row.appendChild(headerCell);
   
           //Add the data rows.
           for (var i = 1; i < data.length; i++) {
             row = table.insertRow(-1);
-            for (var j = 0; j < columnCount-2; j++) {
+            for (var j = 1; j < columnCount - 2; j++) {
               var cell = row.insertCell(-1);
-              cell.setAttribute("class","data"+(j+1));
-              if(j === 0) {
+              cell.setAttribute("class", "data" + (j));
+              if(j === 1) {// 書籍名
                 var anchor = document.createElement("a");
-                anchor.href = data[i][6];
+                anchor.href = data[i][7];
+                anchor.target = "_blank";
                 var str = document.createTextNode(data[i][j]);
                 anchor.appendChild(str);
                 cell.appendChild(anchor);
                 continue;
               }
-              if(j === 1) {
+              if(j === 2) {// 所在
                 switch(data[i][j]) {
                   case 1:
                     cell.innerHTML = "福井"
@@ -94,15 +95,24 @@
                 }
                 continue;
               }
-              if(j === 3) {
-                if(data[i][j] === 1) {
-                  cell.innerHTML = "貸出中";
-                } else {
+              if(j === 4) {// 貸出状況
+                if(data[i][j] === 1) {// 貸出中のとき
+                  if(checkUser(data[i][5])){// 貸出者が呼び出し元アカウントと同じとき「返却」ボタン表示
+                    var btn = document.createElement("button"); 
+                    btn.type = "button";
+                    btn.id = data[i][0];
+                    btn.onclick = function(){onClickReturn(this.id)};
+                    btn.appendChild(document.createTextNode("返却"));
+                    cell.appendChild(btn);
+                  } else {// 貸出者が呼び出し元アカウントと同じでないとき「貸出中」表示
+                    cell.innerHTML = "貸出中";
+                  }
+                } else {// 貸出されてないとき「貸出」ボタン表示
                   var btn = document.createElement("button"); 
                   btn.type = "button";
-                  // btn.onclick = function(){}
-                  var submit = document.createTextNode("貸出");
-                  btn.appendChild(submit);
+                  btn.id = data[i][0];
+                  btn.onclick = function(){onClickLend(this.id)};
+                  btn.appendChild(document.createTextNode("貸出"));
                   cell.appendChild(btn);
                 }
                 continue;
@@ -112,25 +122,25 @@
             }
             // 編集ボタン
             var cell = row.insertCell(-1);
-            cell.setAttribute("class","data"+(j+1));
+            cell.setAttribute("class","data" + (j));
             var btn = document.createElement("button"); 
             btn.type = "button";
-            // btn.onclick = function(){}
-            var submit = document.createTextNode("編集");
-            btn.appendChild(submit);
+            // btn.id = data[i][0];
+            // btn.onclick = function(){};
+            btn.appendChild(document.createTextNode("編集"));
             cell.appendChild(btn);
             // 削除ボタン
             var cell = row.insertCell(-1);
-            cell.setAttribute("class","data"+(j+2));
+            cell.setAttribute("class","data" + (j + 1));
             var btn = document.createElement("button"); 
             btn.type = "button";
-            var submit = document.createTextNode("削除");
-            if(data[i][3] === 1) btn.setAttribute("disabled","disabled");
-            btn.appendChild(submit);
+            // btn.id = data[i][0];
+            // btn.onclick = function(){};
+            if(data[i][4] === 1) btn.setAttribute("disabled", "disabled");
+            btn.appendChild(document.createTextNode("削除"));
             cell.appendChild(btn);
           }
           var dvTable = document.getElementById("dvTable");
-          // dvTable.innerHTML = "";
           dvTable.appendChild(table);
 
         }).withFailureHandler(function(e) {
@@ -143,8 +153,21 @@
       makeTable();
 
       function onClickRegist() {
-        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href= myUrl + "?p=regist";}).getURL();          
+        google.script.run.withSuccessHandler(function(myUrl){window.top.location.href = myUrl + "?p=regist";}).getURL();          
       }
+
+      function onClickLend(lendId) {
+        google.script.run.withSuccessHandler(makeTable).updateItem(lendId, "L");          
+      }
+
+      function onClickReturn(returnId) {
+        google.script.run.withSuccessHandler(makeTable).updateItem(returnId, "R");          
+      }
+
+      function checkUser(lender) {
+        return lender == <?= myUser ?>;
+      }
+
     </script>
   </body>
 </html>
