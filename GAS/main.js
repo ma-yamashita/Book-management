@@ -29,12 +29,19 @@ function saveData(editId, name, owner, whereabouts, url, comment) {
   var sheet = ss.getSheetByName(sheetName);
   var values = sheet.getDataRange().getValues();
   var cntRow = sheet.getLastRow()
+  Logger.log(editId);
   if(editId > 0) {
-    values.forEach(function(value) {
-      if(value[0] == editId) result.push(value);    
-// setValue
-    });
-
+    for(var i = 0; i < cntRow; i++) {
+      Logger.log("values[i][0]:" + values[i][0]);
+      Logger.log("editId:" + editId);
+      var editRow = i + 1;
+      if(values[i][0] == editId) {
+        var sValues = [[name, whereabouts, owner]];
+        sheet.getRange("B" + editRow + ":D" + editRow).setValues(sValues);
+        var sValues = [[url, comment]];
+        sheet.getRange("H" + editRow + ":I" + editRow).setValues(sValues);
+      };    
+    };
   } else {
     var newRow = cntRow + 1;
     var array = [];
