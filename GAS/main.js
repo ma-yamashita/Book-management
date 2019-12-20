@@ -13,11 +13,6 @@ function doGet(e) {
   }
 }
 
-function getPara(e) {
-  var target = e.parameter["t"];
-  return target;
-}
-
 function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
@@ -28,12 +23,9 @@ function saveData(editId, name, owner, whereabouts, url, comment) {
   var ss = SpreadsheetApp.openById(ssId);
   var sheet = ss.getSheetByName(sheetName);
   var values = sheet.getDataRange().getValues();
-  var cntRow = sheet.getLastRow()
-  Logger.log(editId);
+  var cntRow = sheet.getLastRow();
   if(editId > 0) {
     for(var i = 0; i < cntRow; i++) {
-      Logger.log("values[i][0]:" + values[i][0]);
-      Logger.log("editId:" + editId);
       var editRow = i + 1;
       if(values[i][0] == editId) {
         var sValues = [[name, whereabouts, owner]];
@@ -48,12 +40,8 @@ function saveData(editId, name, owner, whereabouts, url, comment) {
     for(var i = 0; i < cntRow; i++) array.push(values[i][0]);
     array.sort(compareFunc);
     var bookid = array[array.length - 1] + 1;
-    sheet.getRange(newRow, 1).setValue(bookid);
-    sheet.getRange(newRow, 2).setValue(name);
-    sheet.getRange(newRow, 3).setValue(whereabouts);
-    sheet.getRange(newRow, 4).setValue(owner);
-    sheet.getRange(newRow, 8).setValue(url);
-    sheet.getRange(newRow, 9).setValue(comment);
+    var setValues = [[bookid, name, whereabouts, owner, "", "", "", url, comment]];
+    sheet.getRange("A" + newRow + ":I" + newRow).setValues(setValues);
   }
 }
 
@@ -74,9 +62,7 @@ function getSheetName() {
 }
 
 function getUser() {
-  var objUser = Session.getActiveUser();
-  var strUser = objUser.toString();
-  var userName = strUser.split("@")[0];
+  var userName = Session.getActiveUser().toString().split("@")[0];
   return userName;
 }
 
@@ -88,7 +74,7 @@ function updateItem(bookId, lendReturn) {
   var values = sheet.getDataRange().getValues();
   var cntRow = sheet.getLastRow();
   for (var i = 0; i < cntRow; ++i) {
-    var row = values[i]
+    var row = values[i];
     if(row[0] == bookId) {
       if(lendReturn == "L") {
         var today = new Date();
