@@ -27,12 +27,8 @@ function saveData(name, owner, whereabouts, url, comment) {
   for(var i = 0; i < cntRow; i++) array.push(values[i][0]);
   array.sort(compareFunc);
   var bookid = array[array.length - 1] + 1;
-  sheet.getRange(newRow, 1).setValue(bookid);
-  sheet.getRange(newRow, 2).setValue(name);
-  sheet.getRange(newRow, 3).setValue(whereabouts);
-  sheet.getRange(newRow, 4).setValue(owner);
-  sheet.getRange(newRow, 8).setValue(url);
-  sheet.getRange(newRow, 9).setValue(comment);
+  var setValues = [[bookid, name, whereabouts, owner, "", "", "", url, comment]];
+  sheet.getRange("A" + newRow + ":I" + newRow).setValues(setValues);
 }
 
 function compareFunc(a, b){
