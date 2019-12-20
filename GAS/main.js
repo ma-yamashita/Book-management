@@ -5,7 +5,9 @@ function doGet(e) {
     myHtml.myUser = getUser();
     return myHtml.evaluate();
   }else if(page == "regist") {
-    return HtmlService.createTemplateFromFile("GAS/regist").evaluate();    
+    var myHtml = HtmlService.createTemplateFromFile("GAS/regist");    
+    myHtml.myTarget = e.parameter["t"];
+    return myHtml.evaluate();
   }else{
     return ContentService.createTextOutput("ERROR：");
   }
@@ -20,24 +22,32 @@ function include(filename) {
   return HtmlService.createHtmlOutputFromFile(filename).getContent();
 }
 
-function saveData(name, owner, whereabouts, url, comment) {  
+function saveData(editId, name, owner, whereabouts, url, comment) {  
   var ssId = getSSID();
   var sheetName = getSheetName();
   var ss = SpreadsheetApp.openById(ssId);
   var sheet = ss.getSheetByName(sheetName);
   var values = sheet.getDataRange().getValues();
   var cntRow = sheet.getLastRow()
-  var newRow = cntRow + 1;
-  var array = [];
-  for(var i = 0; i < cntRow; i++) array.push(values[i][0]);
-  array.sort(compareFunc);
-  var bookid = array[array.length - 1] + 1;
-  sheet.getRange(newRow, 1).setValue(bookid);
-  sheet.getRange(newRow, 2).setValue(name);
-  sheet.getRange(newRow, 3).setValue(whereabouts);
-  sheet.getRange(newRow, 4).setValue(owner);
-  sheet.getRange(newRow, 8).setValue(url);
-  sheet.getRange(newRow, 9).setValue(comment);
+  if(editId > 0) {
+    values.forEach(function(value) {
+      if(value[0] == editId) result.push(value);    
+// setValue
+    });
+
+  } else {
+    var newRow = cntRow + 1;
+    var array = [];
+    for(var i = 0; i < cntRow; i++) array.push(values[i][0]);
+    array.sort(compareFunc);
+    var bookid = array[array.length - 1] + 1;
+    sheet.getRange(newRow, 1).setValue(bookid);
+    sheet.getRange(newRow, 2).setValue(name);
+    sheet.getRange(newRow, 3).setValue(whereabouts);
+    sheet.getRange(newRow, 4).setValue(owner);
+    sheet.getRange(newRow, 8).setValue(url);
+    sheet.getRange(newRow, 9).setValue(comment);
+  }
 }
 
 function compareFunc(a, b){
@@ -111,6 +121,20 @@ function getData(p1, p2) {
     if(p1 && p2 >= 1) {if (re.test(value[1]) && value[2] == p2) result.push(value)};    
     if(!p1 && p2 >= 1) {if (value[2] == p2) result.push(value)};
     if(p1 && p2 < 1) {if (re.test(value[1])) result.push(value)};
+  });
+  return result;
+}
+
+function getEditData(editId) {
+  var ssId = getSSID();
+  var sheetName = getSheetName();
+  var ss = SpreadsheetApp.openById(ssId);
+  var sheet = ss.getSheetByName(sheetName);
+  var values = sheet.getDataRange().getValues();
+  var result = [];
+  // IDの一致するデータを取得する
+  values.forEach(function(value) {
+    if(value[0] == editId) result.push(value);    
   });
   return result;
 }
