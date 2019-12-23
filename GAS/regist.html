@@ -28,6 +28,7 @@
   
     <script>
       function onClickSave() {
+        if(checkTarget() > 0) {var editId = checkTarget()};      
         var name = document.getElementById("nameid").value;
         var owner = document.getElementById("ownerid").value;
         var whereabouts = document.getElementById("whereaboutsid").value;
@@ -63,13 +64,11 @@
             strAlert = "URL";
           }
         }
-
         if (strAlert.length > 0) {
           alert(strAlert + " は必須入力です。入力してください。");
           return;
         }
-
-        google.script.run.saveData(name, owner, whereabouts, url, comment);
+        google.script.run.saveData(editId, name, owner, whereabouts, url, comment);
         onClickClose();
       }
       function onClickClose() {
@@ -78,7 +77,27 @@
       function compareFunc(a, b) {
       return a - b;
       }
-
+      function initBody() {
+        document.getElementById("nameid").value = "";
+        document.getElementById("ownerid").value = "";
+        document.getElementById("whereaboutsid").value = "0";
+        document.getElementById("urlid").value = "";
+        document.getElementById("commentid").value = "";
+        if(checkTarget() > 0) {
+          google.script.run.withSuccessHandler(function(data) {
+            document.getElementById("nameid").value = data[0][1];
+            document.getElementById("ownerid").value = data[0][3];
+            document.getElementById("whereaboutsid").value = data[0][2];
+            document.getElementById("urlid").value = data[0][7];
+            document.getElementById("commentid").value = data[0][8];
+          }).getEditData(checkTarget());
+        }
+      }
+      function checkTarget() {
+        return <?= myTarget ?>;
+      }
+      // 初期表示時の処理
+      initBody();
     </script>  
   </body>
 </html>
