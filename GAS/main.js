@@ -66,7 +66,7 @@ function getUser() {
   return userName;
 }
 
-function updateItem(bookId, lendReturn) {
+function updateItem(bookId, action) {
   var ssId = getSSID();
   var sheetName = getSheetName();
   var ss = SpreadsheetApp.openById(ssId);
@@ -76,16 +76,18 @@ function updateItem(bookId, lendReturn) {
   for (var i = 0; i < cntRow; ++i) {
     var row = values[i];
     if(row[0] == bookId) {
-      if(lendReturn == "L") {
+      if(action == "L") {
         var today = new Date();
         var strToday = (today.getFullYear() + "/" + (today.getMonth() + 1) + "/" + today.getDate());
         sheet.getRange(i + 1, 5).setValue(1);// 貸出ステータス
         sheet.getRange(i + 1, 6).setValue(getUser());// 貸出者
         sheet.getRange(i + 1, 7).setValue(strToday);// 貸出日＝本日日付
-      } else {
+      } else if(action == "R"){
         sheet.getRange(i + 1, 5).setValue(0);// 貸出ステータス
         sheet.getRange(i + 1, 6).setValue("");// 貸出者
-        sheet.getRange(i + 1, 7).setValue("");// 貸出日
+        sheet.getRange(i + 1, 7).setValue("");// 貸出日      
+      } else if(action == "D"){
+        sheet.deleteRow(i + 1);// 削除する行
       }
     }
   }

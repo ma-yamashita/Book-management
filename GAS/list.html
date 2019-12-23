@@ -134,8 +134,8 @@
             cell.setAttribute("class","data" + (j + 1));
             var btn = document.createElement("button"); 
             btn.type = "button";
-            // btn.id = data[i][0];
-            // btn.onclick = function(){};
+            btn.id = data[i][0];
+            btn.onclick = function(){onClickDelete(this.id)};
             if(data[i][4] === 1) btn.setAttribute("disabled", "disabled");
             btn.appendChild(document.createTextNode("削除"));
             cell.appendChild(btn);
@@ -158,6 +158,10 @@
 
       function onClickEdit(editId) {
         google.script.run.withSuccessHandler(function(myUrl){window.top.location.href = myUrl + "?p=regist&t=" + editId;}).getURL();          
+      }
+
+      function onClickDelete(deleteId) {
+        google.script.run.withSuccessHandler(makeTable).updateItem(deleteId, "D");          
       }
 
       function onClickLend(lendId) {
