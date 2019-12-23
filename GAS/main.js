@@ -87,7 +87,7 @@ function updateItem(bookId, action) {
         sheet.getRange(i + 1, 6).setValue("");// 貸出者
         sheet.getRange(i + 1, 7).setValue("");// 貸出日      
       } else if(action == "D"){
-        sheet.deleteRows(i + 1);// 削除する行
+        sheet.deleteRow(i + 1);// 削除する行
       }
     }
   }
