@@ -11,15 +11,15 @@
     <form>
       <p><label>検索</label><br>
       <input id = "bnameid" class = "bname" type = "text" name = "bookname" size = "40" placeholder = "書籍名の文字列検索">  
-      <select id = "whereaboutsid" name = "whereabouts">
-      <option value = "0">所在検索</option>
-      <option value = "1">福井</option>
-      <option value = "2">東京</option>
-      <option value = "3">沖縄</option>
+      <select id = "whereaboutsid" name = "whereabouts" class="btn btn-secondary dropdown-toggle">
+        <option value = "0">所在検索</option>
+        <option value = "1">福井</option>
+        <option value = "2">東京</option>
+        <option value = "3">沖縄</option>
       </select>
-      <input type = "button" name = "search" value = "検索" onclick = "makeTable()">
-      <input type = "reset" name = "clerr" value = "検索条件クリア">
-      <input type = "button" name = "regist" value = "新規登録" onclick = "onClickRegist()"></p>
+      <input type = "button" name = "search" class="btn btn-secondary" value = "検索" onclick = "makeTable()">
+      <input type = "reset" name = "clerr" class="btn btn-secondary" value = "検索条件クリア">
+      <input type = "button" name = "regist" class="btn btn-secondary" value = "新規登録" onclick = "onClickRegist()"></p>
     </form>
 
     <div id = "dvTable" />
@@ -39,6 +39,7 @@
           //Create a HTML Table element.
           var table = document.createElement("table");
           table.id = tableId; //Add TableId
+          table.className = "table table-striped"
           table.border = "1";
   
           //Get the count of columns.
@@ -102,9 +103,11 @@
                     btn.type = "button";
                     btn.id = data[i][0];
                     btn.onclick = function(){onClickReturn(this.id)};
+                    btn.className = "btn btn-warning"
                     btn.appendChild(document.createTextNode("返却"));
                     cell.appendChild(btn);
                   } else {// 貸出者が呼び出し元アカウントと同じでないとき「貸出中」表示
+                    cell.className = "text-danger"
                     cell.innerHTML = "貸出中";
                   }
                 } else {// 貸出されてないとき「貸出」ボタン表示
@@ -112,6 +115,7 @@
                   btn.type = "button";
                   btn.id = data[i][0];
                   btn.onclick = function(){onClickLend(this.id)};
+                  btn.className = "btn btn-success"
                   btn.appendChild(document.createTextNode("貸出"));
                   cell.appendChild(btn);
                 }
@@ -127,6 +131,7 @@
             btn.type = "button";
             btn.id = data[i][0];
             btn.onclick = function(){onClickEdit(this.id)};
+            btn.className = "btn btn-danger"
             btn.appendChild(document.createTextNode("編集"));
             cell.appendChild(btn);
             // 削除ボタン
@@ -137,6 +142,7 @@
             btn.id = data[i][0];
             btn.onclick = function(){onClickDelete(this.id)};
             if(data[i][4] === 1) btn.setAttribute("disabled", "disabled");
+            btn.className = "btn btn-primary"
             btn.appendChild(document.createTextNode("削除"));
             cell.appendChild(btn);
           }
